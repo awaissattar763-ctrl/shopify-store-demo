@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Urban Thread — Premium Streetwear | Concept Demo</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: { ink: '#0a0a0f', card: '#12121a', accent: '#22d3ee', gold: '#fbbf24' },
+      fontFamily: { display: ['Inter','system-ui','sans-serif'] }
+    }
+  }
+}
+</script>
+<link rel="preconnect" href="https://images.unsplash.com">
+<style>
+  body { background:#0a0a0f; color:#e2e8f0; font-family:'Inter',system-ui,sans-serif; }
+  .glass { background:rgba(18,18,26,.75); backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,.08); }
+  .prod-img { aspect-ratio:4/5; object-fit:cover; transition:transform .5s ease; }
+  .prod-card:hover .prod-img { transform:scale(1.05); }
+  #cartDrawer { transition:transform .35s cubic-bezier(.16,1,.3,1); }
+  .fade-in { animation:fadeIn .3s ease; }
+  @keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;} }
+  .marquee { display:flex; gap:3rem; animation:scroll 22s linear infinite; white-space:nowrap; }
+  @keyframes scroll { to{ transform:translateX(-50%);} }
+  ::-webkit-scrollbar { width:8px; } ::-webkit-scrollbar-thumb { background:#22d3ee55; border-radius:8px; }
+  input,select { color-scheme:dark; }
+</style>
+</head>
+<body class="font-display">
+
+<!-- Announcement bar -->
+<div class="bg-cyan-400 text-black text-center text-xs font-semibold py-2 tracking-wide">
+  FREE WORLDWIDE SHIPPING ON ORDERS OVER $75 &nbsp;·&nbsp; NEW DROP: FW26 OUT NOW
+</div>
+
+<!-- Nav -->
+<nav class="sticky top-0 z-40 glass">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="#" class="text-xl font-extrabold tracking-tight">URBAN<span class="text-cyan-400">THREAD</span></a>
+    <div class="hidden md:flex gap-8 text-sm text-slate-300">
+      <a href="#shop" class="hover:text-cyan-400 transition">Shop</a>
+      <a href="#collections" class="hover:text-cyan-400 transition">Collections</a>
+      <a href="#reviews" class="hover:text-cyan-400 transition">Reviews</a>
+      <a href="#" onclick="openSizeGuide();return false;" class="hover:text-cyan-400 transition">Size Guide</a>
+    </div>
+    <div class="flex items-center gap-4">
+      <button onclick="toggleSearch()" class="text-slate-300 hover:text-cyan-400" aria-label="Search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      </button>
+      <button onclick="toggleCart(true)" class="relative text-slate-300 hover:text-cyan-400" aria-label="Cart">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span id="cartCount" class="absolute -top-2 -right-2 bg-cyan-400 text-black text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
+      </button>
+    </div>
+  </div>
+  <div id="searchBar" class="hidden max-w-7xl mx-auto px-6 pb-4">
+    <input id="searchInput" oninput="renderProducts()" placeholder="Search hoodies, tees, jackets…" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm outline-none focus:border-cyan-400" />
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="relative overflow-hidden">
+  <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600&q=80" alt="Urban Thread flagship" class="w-full h-[70vh] object-cover opacity-60" />
+  <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] via-transparent to-transparent"></div>
+  <div class="absolute inset-0 flex items-center">
+    <div class="max-w-7xl mx-auto px-6 w-full">
+      <p class="text-cyan-400 text-xs font-mono tracking-[.3em] mb-4">FW26 COLLECTION — LIVE NOW</p>
+      <h1 class="text-5xl md:text-7xl font-extrabold leading-tight mb-6">Wear the<br/><span class="text-cyan-400">streets.</span></h1>
+      <p class="text-slate-300 max-w-md mb-8">Premium streetwear engineered for everyday life. Heavyweight fabrics, clean cuts, zero compromises.</p>
+      <div class="flex gap-4">
+        <a href="#shop" class="bg-cyan-400 text-black font-bold px-8 py-3.5 rounded-lg hover:bg-cyan-300 transition">Shop the Drop</a>
+        <a href="#collections" class="border border-white/20 px-8 py-3.5 rounded-lg hover:border-cyan-400 hover:text-cyan-400 transition">Collections</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Brand marquee -->
+<div class="border-y border-white/10 py-4 overflow-hidden text-slate-500 text-sm font-mono tracking-widest">
+  <div class="marquee">
+    <span>HEAVYWEIGHT COTTON</span><span>✦</span><span>FREE RETURNS 30 DAYS</span><span>✦</span><span>DESIGNED IN-HOUSE</span><span>✦</span><span>4.9★ FROM 12K REVIEWS</span><span>✦</span>
+    <span>HEAVYWEIGHT COTTON</span><span>✦</span><span>FREE RETURNS 30 DAYS</span><span>✦</span><span>DESIGNED IN-HOUSE</span><span>✦</span><span>4.9★ FROM 12K REVIEWS</span><span>✦</span>
+  </div>
+</div>
+
+<!-- Shop -->
+<section id="shop" class="max-w-7xl mx-auto px-6 py-20">
+  <div class="flex items-end justify-between mb-10">
+    <div>
+      <p class="text-cyan-400 text-xs font-mono tracking-[.3em] mb-2">/ 01 — THE LINEUP</p>
+      <h2 class="text-4xl md:text-5xl font-extrabold">Shop all products</h2>
+    </div>
+    <div class="flex gap-2 text-sm">
+      <button onclick="setFilter('all')" data-f="all" class="fbtn px-4 py-2 rounded-full border border-cyan-400 text-cyan-400">All</button>
+      <button onclick="setFilter('hoodies')" data-f="hoodies" class="fbtn px-4 py-2 rounded-full border border-white/15 text-slate-400">Hoodies</button>
+      <button onclick="setFilter('tees')" data-f="tees" class="fbtn px-4 py-2 rounded-full border border-white/15 text-slate-400">Tees</button>
+      <button onclick="setFilter('jackets')" data-f="jackets" class="fbtn px-4 py-2 rounded-full border border-white/15 text-slate-400">Jackets</button>
+      <button onclick="setFilter('bottoms')" data-f="bottoms" class="fbtn px-4 py-2 rounded-full border border-white/15 text-slate-400">Bottoms</button>
+    </div>
+  </div>
+  <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+</section>
+
+<!-- Collections -->
+<section id="collections" class="border-t border-white/10 py-20">
+  <div class="max-w-7xl mx-auto px-6">
+    <p class="text-cyan-400 text-xs font-mono tracking-[.3em] mb-2">/ 02 — COLLECTIONS</p>
+    <h2 class="text-4xl md:text-5xl font-extrabold mb-10">Shop by vibe</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="relative rounded-2xl overflow-hidden h-72 group cursor-pointer" onclick="setFilter('hoodies');document.getElementById('shop').scrollIntoView({behavior:'smooth'})">
+        <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Essentials"/>
+        <div class="absolute inset-0 bg-black/50 flex items-end p-6"><div><h3 class="text-2xl font-bold">Essentials</h3><p class="text-slate-300 text-sm">Everyday heavyweights →</p></div></div>
+      </div>
+      <div class="relative rounded-2xl overflow-hidden h-72 group cursor-pointer" onclick="setFilter('jackets');document.getElementById('shop').scrollIntoView({behavior:'smooth'})">
+        <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Outerwear"/>
+        <div class="absolute inset-0 bg-black/50 flex items-end p-6"><div><h3 class="text-2xl font-bold">Outerwear</h3><p class="text-slate-300 text-sm">Built for winter →</p></div></div>
+      </div>
+      <div class="relative rounded-2xl overflow-hidden h-72 group cursor-pointer" onclick="setFilter('tees');document.getElementById('shop').scrollIntoView({behavior:'smooth'})">
+        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Tees"/>
+        <div class="absolute inset-0 bg-black/50 flex items-end p-6"><div><h3 class="text-2xl font-bold">Tees</h3><p class="text-slate-300 text-sm">Clean basics →</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Feature strip -->
+<section class="border-t border-white/10 py-16">
+  <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+    <div><div class="text-cyan-400 text-3xl mb-2">🚚</div><h4 class="font-bold mb-1">Free Shipping</h4><p class="text-slate-500 text-sm">On all orders over $75</p></div>
+    <div><div class="text-cyan-400 text-3xl mb-2">↩️</div><h4 class="font-bold mb-1">30-Day Returns</h4><p class="text-slate-500 text-sm">No questions asked</p></div>
+    <div><div class="text-cyan-400 text-3xl mb-2">🔒</div><h4 class="font-bold mb-1">Secure Checkout</h4><p class="text-slate-500 text-sm">256-bit encryption</p></div>
+    <div><div class="text-cyan-400 text-3xl mb-2">⭐</div><h4 class="font-bold mb-1">4.9/5 Rating</h4><p class="text-slate-500 text-sm">12,400+ verified reviews</p></div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section id="reviews" class="border-t border-white/10 py-20">
+  <div class="max-w-7xl mx-auto px-6">
+    <p class="text-cyan-400 text-xs font-mono tracking-[.3em] mb-2">/ 03 — REVIEWS</p>
+    <h2 class="text-4xl md:text-5xl font-extrabold mb-10">Worn & loved</h2>
+    <div class="grid md:grid-cols-3 gap-6" id="reviewGrid"></div>
+  </div>
+</section>
+
+<!-- Newsletter -->
+<section class="border-t border-white/10 py-20">
+  <div class="max-w-2xl mx-auto px-6 text-center">
+    <h2 class="text-3xl md:text-4xl font-extrabold mb-4">Get 10% off your first order</h2>
+    <p class="text-slate-400 mb-8">Join 40,000+ subscribers. Early drops, member pricing, zero spam.</p>
+    <form onsubmit="subscribe(event)" class="flex gap-3 max-w-md mx-auto">
+      <input id="nlEmail" type="email" required placeholder="you@email.com" class="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-cyan-400" />
+      <button class="bg-cyan-400 text-black font-bold px-6 rounded-lg hover:bg-cyan-300 transition">Join</button>
+    </form>
+    <p id="nlMsg" class="text-cyan-400 text-sm mt-4 hidden">You're in! Check your inbox for the 10% code. 🎉</p>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="border-t border-white/10 py-14">
+  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-10 text-sm">
+    <div>
+      <p class="text-lg font-extrabold mb-3">URBAN<span class="text-cyan-400">THREAD</span></p>
+      <p class="text-slate-500">Premium streetwear, engineered for everyday life.</p>
+    </div>
+    <div><p class="font-bold mb-3">Shop</p><ul class="space-y-2 text-slate-500"><li><a href="#shop" class="hover:text-cyan-400">All products</a></li><li><a href="#collections" class="hover:text-cyan-400">Collections</a></li><li><a href="#" class="hover:text-cyan-400">Gift cards</a></li></ul></div>
+    <div><p class="font-bold mb-3">Help</p><ul class="space-y-2 text-slate-500"><li><a href="#" onclick="openSizeGuide();return false;" class="hover:text-cyan-400">Size guide</a></li><li><a href="#" class="hover:text-cyan-400">Shipping & returns</a></li><li><a href="#" class="hover:text-cyan-400">Contact</a></li></ul></div>
+    <div><p class="font-bold mb-3">Follow</p><ul class="space-y-2 text-slate-500"><li><a href="#" class="hover:text-cyan-400">Instagram</a></li><li><a href="#" class="hover:text-cyan-400">TikTok</a></li><li><a href="#" class="hover:text-cyan-400">X</a></li></ul></div>
+  </div>
+  <div class="max-w-7xl mx-auto px-6 mt-10 pt-6 border-t border-white/10 text-xs text-slate-600 flex flex-col md:flex-row justify-between gap-2">
+    <p>© 2026 Urban Thread. All rights reserved.</p>
+    <p class="text-amber-400/80">⚠ Concept demo — fictional brand. No real orders are processed; checkout is simulated.</p>
+  </div>
+</footer>
+
+<!-- Quick view modal -->
+<div id="qvModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div class="absolute inset-0 bg-black/70" onclick="closeQV()"></div>
+  <div class="relative glass rounded-2xl max-w-3xl w-full grid md:grid-cols-2 overflow-hidden fade-in max-h-[90vh] overflow-y-auto">
+    <img id="qvImg" src="" alt="" class="w-full h-72 md:h-full object-cover" />
+    <div class="p-8">
+      <p id="qvCat" class="text-cyan-400 text-xs font-mono tracking-widest mb-2"></p>
+      <h3 id="qvName" class="text-2xl font-extrabold mb-2"></h3>
+      <div class="flex items-center gap-2 mb-4"><span class="text-gold">★★★★★</span><span id="qvRev" class="text-slate-500 text-sm"></span></div>
+      <p id="qvPrice" class="text-2xl font-bold text-cyan-400 mb-4"></p>
+      <p id="qvDesc" class="text-slate-400 text-sm mb-6"></p>
+      <p class="text-xs font-bold mb-2">SIZE</p>
+      <div id="qvSizes" class="flex gap-2 mb-6"></div>
+      <p class="text-xs font-bold mb-2">QTY</p>
+      <div class="flex items-center gap-3 mb-6">
+        <button onclick="qvQtyChange(-1)" class="w-9 h-9 border border-white/15 rounded-lg">−</button>
+        <span id="qvQty" class="font-bold w-6 text-center">1</span>
+        <button onclick="qvQtyChange(1)" class="w-9 h-9 border border-white/15 rounded-lg">+</button>
+      </div>
+      <button onclick="qvAddToCart()" class="w-full bg-cyan-400 text-black font-bold py-3.5 rounded-lg hover:bg-cyan-300 transition mb-3">Add to Cart</button>
+      <button onclick="openSizeGuide()" class="w-full text-sm text-slate-400 hover:text-cyan-400">📏 Size guide</button>
+    </div>
+  </div>
+</div>
+
+<!-- Size guide modal -->
+<div id="sgModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div class="absolute inset-0 bg-black/70" onclick="closeSizeGuide()"></div>
+  <div class="relative glass rounded-2xl max-w-lg w-full p-8 fade-in">
+    <h3 class="text-2xl font-extrabold mb-4">Size Guide</h3>
+    <table class="w-full text-sm">
+      <thead><tr class="text-slate-500 text-left"><th class="pb-2">Size</th><th class="pb-2">Chest (in)</th><th class="pb-2">Length (in)</th><th class="pb-2">Sleeve (in)</th></tr></thead>
+      <tbody class="text-slate-300">
+        <tr class="border-t border-white/10"><td class="py-2 font-bold">S</td><td>34–36</td><td>27</td><td>33</td></tr>
+        <tr class="border-t border-white/10"><td class="py-2 font-bold">M</td><td>38–40</td><td>28</td><td>34</td></tr>
+        <tr class="border-t border-white/10"><td class="py-2 font-bold">L</td><td>42–44</td><td>29</td><td>35</td></tr>
+        <tr class="border-t border-white/10"><td class="py-2 font-bold">XL</td><td>46–48</td><td>30</td><td>36</td></tr>
+        <tr class="border-t border-white/10"><td class="py-2 font-bold">XXL</td><td>50–52</td><td>31</td><td>37</td></tr>
+      </tbody>
+    </table>
+    <p class="text-slate-500 text-xs mt-4">Between sizes? We recommend sizing up for hoodies, true to size for tees.</p>
+    <button onclick="closeSizeGuide()" class="mt-6 w-full border border-white/15 py-3 rounded-lg hover:border-cyan-400">Close</button>
+  </div>
+</div>
+
+<!-- Cart drawer -->
+<div id="cartOverlay" class="hidden fixed inset-0 z-40 bg-black/60" onclick="toggleCart(false)"></div>
+<aside id="cartDrawer" class="fixed top-0 right-0 h-full w-full max-w-md z-50 bg-[#12121a] border-l border-white/10 translate-x-full flex flex-col">
+  <div class="p-6 border-b border-white/10 flex items-center justify-between">
+    <h3 class="text-xl font-extrabold">Your Cart <span id="cartHeadCount" class="text-cyan-400 text-sm"></span></h3>
+    <button onclick="toggleCart(false)" class="text-slate-400 hover:text-white text-2xl leading-none">×</button>
+  </div>
+  <div id="cartItems" class="flex-1 overflow-y-auto p-6 space-y-5"></div>
+  <div class="p-6 border-t border-white/10">
+    <div class="flex justify-between mb-1 text-sm"><span class="text-slate-400">Subtotal</span><span id="cartSubtotal" class="font-bold">$0.00</span></div>
+    <div class="flex justify-between mb-4 text-sm"><span class="text-slate-400">Shipping</span><span id="cartShip" class="font-bold">—</span></div>
+    <p class="text-xs text-slate-500 mb-4">🎉 Free shipping unlocked on orders over $75!</p>
+    <button onclick="startCheckout()" class="w-full bg-cyan-400 text-black font-bold py-3.5 rounded-lg hover:bg-cyan-300 transition">Checkout →</button>
+    <button onclick="toggleCart(false)" class="w-full text-sm text-slate-400 mt-3 hover:text-white">Continue shopping</button>
+  </div>
+</aside>
+
+<!-- Checkout modal -->
+<div id="coModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div class="absolute inset-0 bg-black/70"></div>
+  <div class="relative glass rounded-2xl max-w-lg w-full p-8 fade-in max-h-[90vh] overflow-y-auto">
+    <div id="coStep1">
+      <h3 class="text-2xl font-extrabold mb-1">Checkout</h3>
+      <p class="text-amber-400/80 text-xs mb-6">⚠ Simulated checkout — no real payment is processed.</p>
+      <div class="space-y-3 mb-6">
+        <input placeholder="Email" type="email" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-cyan-400"/>
+        <div class="grid grid-cols-2 gap-3">
+          <input placeholder="First name" class="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-cyan-400"/>
+          <input placeholder="Last name" class="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-cyan-400"/>
+        </div>
+        <input placeholder="Address" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-cyan-400"/>
+        <div class="grid grid-cols-2 gap-3">
+          <input placeholder="City" class="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-cyan-400"/>
+          <input placeholder="ZIP" class="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-cyan-400"/>
+        </div>
+      </div>
+      <h4 class="font-bold mb-3">Payment <span class="text-xs text-slate-500 font-normal">(simulated)</span></h4>
+      <div class="space-y-3 mb-6">
+        <input placeholder="Card number  •••• •••• •••• ••••" inputmode="numeric" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-cyan-400"/>
+        <div class="grid grid-cols-2 gap-3">
+          <input placeholder="MM / YY" class="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-cyan-400"/>
+          <input placeholder="CVC" class="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-cyan-400"/>
+        </div>
+      </div>
+      <div class="flex justify-between font-bold text-lg mb-6"><span>Total</span><span id="coTotal" class="text-cyan-400">$0.00</span></div>
+      <button onclick="placeOrder()" id="payBtn" class="w-full bg-cyan-400 text-black font-bold py-3.5 rounded-lg hover:bg-cyan-300 transition">Pay <span id="payAmt"></span></button>
+      <button onclick="closeCheckout()" class="w-full text-sm text-slate-400 mt-3 hover:text-white">← Back to cart</button>
+    </div>
+    <div id="coStep2" class="hidden text-center py-8">
+      <div class="text-6xl mb-4">✅</div>
+      <h3 class="text-2xl font-extrabold mb-2">Order confirmed!</h3>
+      <p class="text-slate-400 mb-2">Order <span id="ordNum" class="text-cyan-400 font-mono"></span></p>
+      <p class="text-slate-500 text-sm mb-8">This was a simulated checkout — no real order was placed and no payment was taken.</p>
+      <button onclick="closeCheckout();toggleCart(false)" class="bg-cyan-400 text-black font-bold px-8 py-3 rounded-lg">Keep shopping</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const PRODUCTS = [
+  {id:1, name:"Heavyweight Hoodie — Onyx", cat:"hoodies", price:89, old:120, rating:"4.9 (2.1k)", img:"https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&q=80", desc:"480 GSM brushed fleece. Double-lined hood, hidden phone pocket. The hoodie that ends the search.", badge:"BESTSELLER"},
+  {id:2, name:"Essential Tee — Bone", cat:"tees", price:35, old:45, rating:"4.8 (3.4k)", img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80", desc:"220 GSM combed cotton. Pre-shrunk, side-seamed, zero branding. Your everyday uniform.", badge:""},
+  {id:3, name:"Utility Cargo Pants", cat:"bottoms", price:110, old:0, rating:"4.9 (890)", img:"https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600&q=80", desc:"Ripstop cotton with 6 pockets. Adjustable cuffs, reinforced knees. Built to outlast trends.", badge:"NEW"},
+  {id:4, name:"Puffer Jacket — Midnight", cat:"jackets", price:199, old:260, rating:"5.0 (640)", img:"https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&q=80", desc:"Recycled down fill, storm-sealed zips, packable hood. Winter's worst, handled.", badge:"-23%"},
+  {id:5, name:"Oversized Tee — Slate", cat:"tees", price:39, old:0, rating:"4.7 (1.8k)", img:"https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&q=80", desc:"Dropped shoulders, boxy fit, garment-dyed. The silhouette of the season.", badge:""},
+  {id:6, name:"Denim Trucker Jacket", cat:"jackets", price:149, old:0, rating:"4.8 (720)", img:"https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=600&q=80", desc:"14oz Japanese selvedge denim. Ages beautifully, fits like it was made for you.", badge:"NEW"},
+  {id:7, name:"Cloud Hoodie — Heather", cat:"hoodies", price:95, old:0, rating:"4.9 (1.2k)", img:"https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=600&q=80", desc:"Cloud-soft loopback cotton. The hoodie you'll fight your partner over.", badge:""},
+  {id:8, name:"Tech Joggers", cat:"bottoms", price:85, old:110, rating:"4.8 (960)", img:"https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=600&q=80", desc:"Water-resistant softshell, articulated knees, zip pockets. Street to gym, no change needed.", badge:"-22%"},
+  {id:9, name:"Graphic Tee — Static", cat:"tees", price:42, old:0, rating:"4.7 (540)", img:"https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=600&q=80", desc:"Limited-run graphic, water-based inks. When it's gone, it's gone.", badge:"LIMITED"},
+  {id:10, name:"Field Jacket — Olive", cat:"jackets", price:179, old:0, rating:"4.9 (410)", img:"https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80", desc:"Waxed canvas, corduroy collar, brass hardware. A jacket for decades, not seasons.", badge:""},
+  {id:11, name:"Ribbed Beanie", cat:"hoodies", price:28, old:0, rating:"4.8 (2.9k)", img:"https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=600&q=80", desc:"Chunky rib knit, fleece-lined. One size, endless winters.", badge:""},
+  {id:12, name:"Pleated Trousers — Charcoal", cat:"bottoms", price:120, old:0, rating:"4.9 (380)", img:"https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&q=80", desc:"Tailored pleats, tapered leg. Streetwear grows up.", badge:"NEW"},
+];
+const REVIEWS = [
+  {n:"Marcus T.", t:"The Heavyweight Hoodie is unreal. Two winters in and it still looks brand new. Best $89 I've spent on clothing.", s:5},
+  {n:"Priya S.", t:"Ordered Tuesday night, arrived Friday. The fit guide was spot on — medium fits exactly as described. Already bought a second tee.", s:5},
+  {n:"Diego R.", t:"Finally a brand that gets tall guys. The XL actually fits my 6'3\" frame. Quality is miles above the mall brands.", s:5},
+];
+const SIZES = ["S","M","L","XL","XXL"];
+let cart = JSON.parse(localStorage.getItem('ut_cart')||'[]');
+let filter = 'all', qvId = null, qvSize = 'M', qvQty = 1;
+
+function money(n){ return '$'+n.toFixed(2); }
+function saveCart(){ localStorage.setItem('ut_cart', JSON.stringify(cart)); renderCart(); }
+
+function setFilter(f){
+  filter = f;
+  document.querySelectorAll('.fbtn').forEach(b=>{
+    const on = b.dataset.f===f;
+    b.className = 'fbtn px-4 py-2 rounded-full border '+(on?'border-cyan-400 text-cyan-400':'border-white/15 text-slate-400');
+  });
+  renderProducts();
+}
+function toggleSearch(){ document.getElementById('searchBar').classList.toggle('hidden'); }
+
+function renderProducts(){
+  const q = (document.getElementById('searchInput').value||'').toLowerCase();
+  const grid = document.getElementById('productGrid');
+  const list = PRODUCTS.filter(p => (filter==='all'||p.cat===filter) && p.name.toLowerCase().includes(q));
+  grid.innerHTML = list.map(p=>`
+    <div class="prod-card group cursor-pointer fade-in" onclick="openQV(${p.id})">
+      <div class="relative rounded-xl overflow-hidden bg-white/5 mb-3">
+        <img src="${p.img}" alt="${p.name}" loading="lazy" class="prod-img w-full"/>
+        ${p.badge?`<span class="absolute top-3 left-3 bg-cyan-400 text-black text-[10px] font-bold px-2.5 py-1 rounded-full">${p.badge}</span>`:''}
+        <button onclick="event.stopPropagation();quickAdd(${p.id})" class="absolute bottom-3 left-3 right-3 bg-white text-black text-sm font-bold py-2.5 rounded-lg opacity-0 group-hover:opacity-100 transition translate-y-2 group-hover:translate-y-0">Quick Add +</button>
+      </div>
+      <p class="text-xs text-slate-500 uppercase tracking-wide">${p.cat}</p>
+      <h3 class="font-bold text-sm mt-0.5">${p.name}</h3>
+      <div class="flex items-center gap-2 mt-1">
+        <span class="text-cyan-400 font-bold">${money(p.price)}</span>
+        ${p.old?`<span class="text-slate-600 line-through text-sm">${money(p.old)}</span>`:''}
+        <span class="text-slate-600 text-xs ml-auto">★ ${p.rating.split(' ')[0]}</span>
+      </div>
+    </div>`).join('') || '<p class="col-span-full text-slate-500 text-center py-10">No products match your search.</p>';
+}
+function quickAdd(id){ addToCart(id,'M',1); toggleCart(true); }
+
+function openQV(id){
+  const p = PRODUCTS.find(x=>x.id===id); qvId=id; qvSize='M'; qvQty=1;
+  document.getElementById('qvImg').src=p.img;
+  document.getElementById('qvCat').textContent=p.cat.toUpperCase();
+  document.getElementById('qvName').textContent=p.name;
+  document.getElementById('qvRev').textContent=p.rating+' reviews';
+  document.getElementById('qvPrice').innerHTML = money(p.price)+(p.old?` <span class="text-slate-600 line-through text-lg font-normal">${money(p.old)}</span>`:'');
+  document.getElementById('qvDesc').textContent=p.desc;
+  document.getElementById('qvQty').textContent='1';
+  document.getElementById('qvSizes').innerHTML = SIZES.map(s=>`<button onclick="qvSetSize('${s}')" data-s="${s}" class="qvs w-11 h-11 rounded-lg border ${s==='M'?'border-cyan-400 text-cyan-400':'border-white/15 text-slate-400'} text-sm font-bold">${s}</button>`).join('');
+  document.getElementById('qvModal').classList.remove('hidden');
+  document.body.style.overflow='hidden';
+}
+function qvSetSize(s){ qvSize=s; document.querySelectorAll('.qvs').forEach(b=>{const on=b.dataset.s===s;b.className=`qvs w-11 h-11 rounded-lg border text-sm font-bold ${on?'border-cyan-400 text-cyan-400':'border-white/15 text-slate-400'}`;}); }
+function qvQtyChange(d){ qvQty=Math.max(1,Math.min(9,qvQty+d)); document.getElementById('qvQty').textContent=qvQty; }
+function qvAddToCart(){ addToCart(qvId,qvSize,qvQty); closeQV(); toggleCart(true); }
+function closeQV(){ document.getElementById('qvModal').classList.add('hidden'); document.body.style.overflow=''; }
+
+function addToCart(id,size,qty){
+  const key = id+'_'+size;
+  const ex = cart.find(c=>c.key===key);
+  if(ex) ex.qty=Math.min(9,ex.qty+qty); else cart.push({key,id,size,qty});
+  saveCart();
+}
+function cartQty(id,size,d){
+  const it = cart.find(c=>c.key===id+'_'+size); if(!it) return;
+  it.qty+=d; if(it.qty<1) cart=cart.filter(c=>c!==it); it.qty=Math.min(9,it.qty); saveCart();
+}
+function removeItem(key){ cart=cart.filter(c=>c.key!==key); saveCart(); }
+function cartTotals(){
+  const sub = cart.reduce((s,c)=>{const p=PRODUCTS.find(x=>x.id===c.id);return s+p.price*c.qty;},0);
+  const ship = sub===0?0:(sub>=75?0:6.95);
+  return {sub, ship, total:sub+ship, count:cart.reduce((s,c)=>s+c.qty,0)};
+}
+function renderCart(){
+  const t = cartTotals();
+  document.getElementById('cartCount').textContent=t.count;
+  document.getElementById('cartHeadCount').textContent=t.count?`(${t.count})`:'';
+  const box = document.getElementById('cartItems');
+  if(!cart.length){ box.innerHTML='<div class="text-center py-16"><p class="text-4xl mb-4">🛒</p><p class="text-slate-400">Your cart is empty.</p><button onclick="toggleCart(false)" class="text-cyan-400 text-sm mt-4">Start shopping →</button></div>'; }
+  else box.innerHTML = cart.map(c=>{
+    const p=PRODUCTS.find(x=>x.id===c.id);
+    return `<div class="flex gap-4 fade-in">
+      <img src="${p.img}" class="w-20 h-24 object-cover rounded-lg" alt="${p.name}"/>
+      <div class="flex-1">
+        <p class="font-bold text-sm">${p.name}</p>
+        <p class="text-slate-500 text-xs">Size: ${c.size}</p>
+        <div class="flex items-center justify-between mt-2">
+          <div class="flex items-center gap-2">
+            <button onclick="cartQty(${c.id},'${c.size}',-1)" class="w-7 h-7 border border-white/15 rounded">−</button>
+            <span class="text-sm font-bold w-5 text-center">${c.qty}</span>
+            <button onclick="cartQty(${c.id},'${c.size}',1)" class="w-7 h-7 border border-white/15 rounded">+</button>
+          </div>
+          <span class="font-bold text-sm">${money(p.price*c.qty)}</span>
+        </div>
+        <button onclick="removeItem('${c.key}')" class="text-slate-600 text-xs mt-1 hover:text-red-400">Remove</button>
+      </div></div>`;
+  }).join('');
+  document.getElementById('cartSubtotal').textContent=money(t.sub);
+  document.getElementById('cartShip').textContent=t.sub===0?'—':(t.ship===0?'FREE':money(t.ship));
+}
+function toggleCart(open){
+  document.getElementById('cartDrawer').style.transform = open?'translateX(0)':'translateX(100%)';
+  document.getElementById('cartOverlay').classList.toggle('hidden',!open);
+  document.body.style.overflow=open?'hidden':'';
+}
+function openSizeGuide(){ document.getElementById('sgModal').classList.remove('hidden'); }
+function closeSizeGuide(){ document.getElementById('sgModal').classList.add('hidden'); }
+
+function startCheckout(){
+  if(!cart.length) return;
+  const t=cartTotals();
+  document.getElementById('coTotal').textContent=money(t.total);
+  document.getElementById('payAmt').textContent=money(t.total);
+  document.getElementById('coStep1').classList.remove('hidden');
+  document.getElementById('coStep2').classList.add('hidden');
+  toggleCart(false);
+  document.getElementById('coModal').classList.remove('hidden');
+  document.body.style.overflow='hidden';
+}
+function closeCheckout(){ document.getElementById('coModal').classList.add('hidden'); document.body.style.overflow=''; }
+function placeOrder(){
+  const btn=document.getElementById('payBtn');
+  btn.textContent='Processing…'; btn.disabled=true;
+  setTimeout(()=>{
+    document.getElementById('ordNum').textContent='#UT-'+Math.floor(100000+Math.random()*900000);
+    document.getElementById('coStep1').classList.add('hidden');
+    document.getElementById('coStep2').classList.remove('hidden');
+    cart=[]; saveCart();
+    btn.textContent='Pay'; btn.disabled=false;
+  },1400);
+}
+function subscribe(e){
+  e.preventDefault();
+  document.getElementById('nlMsg').classList.remove('hidden');
+  document.getElementById('nlEmail').value='';
+}
+function renderReviews(){
+  document.getElementById('reviewGrid').innerHTML = REVIEWS.map(r=>`
+    <div class="glass rounded-2xl p-7">
+      <div class="text-gold mb-3">${'★'.repeat(r.s)}</div>
+      <p class="text-slate-300 text-sm leading-relaxed mb-5">"${r.t}"</p>
+      <p class="font-bold text-sm">${r.n} <span class="text-cyan-400 text-xs font-normal ml-1">✓ Verified buyer</span></p>
+    </div>`).join('');
+}
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){closeQV();closeSizeGuide();closeCheckout();toggleCart(false);} });
+renderProducts(); renderCart(); renderReviews();
+</script>
+</body>
+</html>
